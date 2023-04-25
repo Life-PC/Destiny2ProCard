@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destiny2 IDカード</title>
+    <style>
+        * {
+            color: rgb(240, 239, 255);
+        }
+
+        input[type="text"],
+        button[type="submit"] {
+            color: black;
+        }
+
+        html {
+            background-image: linear-gradient(90deg, rgba(0, 4, 35, 1), rgba(36, 35, 85, 1) 50%, rgba(0, 4, 22, 1));
+        }
+
+        section p + * {
+            margin-left: 20px;
+        }
+
+        ul {
+            padding: 0;
+        }
+
+        li {
+            list-style-type: none;
+            list-style-position: inside;
+        }
+    </style>
+    <script>
+        function getParam(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        window.onload = function() {
+            let name = getParam('n');
+            if (name === '' || name === null)
+                return;
+            console.log(name + 'on start');
+            let id  = getParam('id');
+            let platform = [getParam('p0'), getParam('p1'), getParam('p2')];
+            let voice = [getParam('v0'), getParam('v1'), getParam('v2')];
+            let guardian = [getParam('g0'), getParam('g1'), getParam('g2')];
+
+            document.getElementById('name').innerHTML = name;
+            document.getElementById('bungieID').innerHTML = id;
+
+            let platformListText = '';
+            let voiceListText = '';
+            let guardianListText = '';
+
+            for (let i = 0; i < 3 ; i++)
+            {
+                if (platform[i] === 'on')
+                {
+                    let listText = i === 0 ? 'PS' : i === 1 ? 'PC' : 'XBOX';
+                    platformListText += '<li>' + listText + '</li>';
+                }
+                if (voice[i] === 'on')
+                {
+                    let listText = i === 0 ? 'PS：' + getParam('ps') : i === 1 ? 'Discord：' + getParam('dc') : '聞き専';
+                    voiceListText += '<li>' + listText + '</li>';
+                }
+                if (guardian[i] === 'on')
+                {
+                    let listText = i === 0 ? 'ハンター' : i === 1 ? 'ウォーロック' : 'タイタン';
+                    guardianListText += '<li>' + listText + '</li>';
+                }
+            }
+            document.getElementById('platform').innerHTML = platformListText;
+            document.getElementById('voice').innerHTML = voiceListText;
+            document.getElementById('guardian').innerHTML = guardianListText;
+            document.getElementById('send').innerHTML =
+                '<input type="text" name="code" value="' + window.location + '">' + 
+                '<button onclick="copy();">コピー</button>';
+        };
+
+        function copy() {
+            let copyText = getElementsByName('code')[0].value;
+            navigator.clipboard.writeText(copyText);
+        }
+
+
+        function Share() {
+            let name = document.getElementsByName('n')[0].value;
+            let id = document.getElementsByName('id')[0].value;
+            let missCount = 0;
+
+            console.log(name);
+            console.log(id);
+
+            if (name === '')
+            {
+                missCount = missCount + 1;
+            }
+            if (id === '' || id.indexOf('#') === -1){
+                missCount = missCount + 2;
+            }
+
+            if (missCount >= 1)
+            {
+                switch(missCount) {
+                    case 1:
+                        alert('名前を入力してください。');
+                        break;
+                    case 2:
+                        alert('BungieIDを＃付きで入力してください。');
+                        break;
+                    case 3:
+                        alert('名前とBungieIDを入力してください。');
+                        break;
+                }
+                return;
+            }
+            document.d2Card.submit();
+        }
+    </script>
+</head>
+
+<body>
+    <header></header>
+    <main>
+        <article>
+            <form name="d2Card">
+                <section>
+                    <p>名前</p>
+                    <p id="name"><input type="text" name="n"></p>
+                </section>
+                <section>
+                    <p>Bungie ID</p>
+                    <p id="bungieID"><input type="text" name="id"></p>
+                </section>
+                <section>
+                    <p>プラットフォーム</p>
+                    <ul id="platform">
+                        <li><label><input type="checkbox" name="p0">PS</label></li>
+                        <li><label><input type="checkbox" name="p1">PC</label></li>
+                        <li><label><input type="checkbox" name="p2">XBOX</label></li>
+                    </ul>
+                </section>
+                <section>
+                    <p>ボイスチャット</p>
+                    <ul id="voice">
+                        <li><label><input type="checkbox" name="v0">PS：</label><input type="text" name="ps"></li>
+                        <li><label><input type="checkbox" name="v1">Discord：</label><input type="text" name="dc"></li>
+                        <li><label><input type="checkbox" name="v2">聞き専</label></li>
+                    </ul>
+                </section>
+                <section>
+                    <p>使用ガーディアン</p>
+                    <ul id="guardian">
+                        <li><label><input type="checkbox" name="g0">ハンター</label></li>
+                        <li><label><input type="checkbox" name="g1">ウォーロック</label></li>
+                        <li><label><input type="checkbox" name="g2">タイタン</label></li>
+                    </ul>
+                </section>
+            </form>
+            <p id="send"><button onclick="Share();">共有</button></p>
+        </article>
+    </main>
+</body>
+
+</html>
