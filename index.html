@@ -12,7 +12,7 @@
         }
 
         input[type="text"],
-        button[type="submit"] {
+        button {
             color: black;
         }
 
@@ -31,6 +31,22 @@
         li {
             list-style-type: none;
             list-style-position: inside;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        #LINE {
+            background-color: rgb(0, 166, 0);
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+        #Twitter {
+            background-color: rgb(29, 155, 240);
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin-left: 30px;
         }
     </style>
     <script>
@@ -83,8 +99,10 @@
             document.getElementById('voice').innerHTML = voiceListText;
             document.getElementById('guardian').innerHTML = guardianListText;
             document.getElementById('send').innerHTML =
-                '<input type="text" name="code" value="' + window.location + '">' + 
-                '<button onclick="copy();">コピー</button>';
+                '<a id="LINE" href="http://line.me/R/msg/text/?' + window.location + '%0aDestiny2 プロフィールカード" target="_blank" rel="nofollow noopener">LINEメッセージで送信</a>' + 
+                '<a id="Twitter" href="https://twitter.com/share?url=' + window.location + '&text=Destiny2 プロフィールカード" rel="nofollow noopener" target="_blank">Tweet</a>';
+                // '<input type="text" name="code" value="' + window.location + '">' + 
+                // '<button onclick="copy();">コピー</button>';
         };
 
         function copy() {
