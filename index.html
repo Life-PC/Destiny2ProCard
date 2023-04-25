@@ -105,12 +105,6 @@
                 // '<button onclick="copy();">コピー</button>';
         };
 
-        function copy() {
-            let copyText = getElementsByName('code')[0].value;
-            navigator.clipboard.writeText(copyText);
-        }
-
-
         function Share() {
             let name = document.getElementsByName('n')[0].value;
             let id = document.getElementsByName('id')[0].value;
