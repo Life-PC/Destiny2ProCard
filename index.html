@@ -22,10 +22,46 @@
             background-image: linear-gradient(90deg, rgba(0, 4, 35, 1), rgba(36, 35, 85, 1) 50%, rgba(0, 4, 22, 1));
         }
 
+        section:nth-child(1) {
+            margin-top: 30px;
+        }
+        section {
+            border: 1px solid #FFF;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        section p:first-child {
+            font-size: 18px;
+            margin-top: -13px;
+            margin-left: 15px;
+            padding: 0 10px;
+            background-color: White;
+            color: black;
+            border-radius: 10px;
+            width: fit-content;
+        }
+
         section p+* {
             margin-left: 20px;
         }
-
+        #name input{
+            width: 93%;
+        }
+        #bungieID input {
+            width: 43%;
+        }
+        #voice li:nth-child(1) label + input {
+            width: 76%;
+        }
+        #voice li:nth-child(2) label + input,
+        #voice li:nth-child(2) label + input + input {
+            width: 29%;
+        }
+        #message textarea {
+            width: 93%;
+        }
         ul {
             padding: 0;
         }
@@ -54,6 +90,7 @@
         .share {
             display: flex;
             gap: 20px;
+            justify-content: center;
         }
     </style>
     <script>
@@ -68,10 +105,11 @@
         }
 
         window.onload = function () {
-            let name = decodeURIComponent(getParam('n'));
+            let name = getParam('n');
             if (name === '' || name === null)
                 return;
 
+            name = decodeURIComponent(getParam('n'));
             let id = decodeURIComponent(getParam('id'));
             let idn = getParam('idn');
             let platform = [getParam('p0'), getParam('p1'), getParam('p2')];
