@@ -142,16 +142,29 @@
             document.getElementById('voice').innerHTML = voiceListText;
             document.getElementById('guardian').innerHTML = guardianListText;
             document.getElementById('message').innerHTML = message;
+
+            const apiKey = '86efd9a9507da8f941e167876b25ccea';
+            const longUrl = window.location;
+            const apiUrl = 'https://x.gd/api/';
+            const apiCallUrl = `${apiUrl}?url=${encodeURIComponent(longUrl)}&apiKey=${apiKey}`;
+            let shortUrlText = '';
+
+            fetch(apiCallUrl)
+            .then(response => response.text())
+            .then(shortUrl => {
+                shortUrlText = shortUrl;
+            })
+            .catch(error => shortUrlText = longUrl);
+
             document.getElementById('send').innerHTML =
                 '<ul class="share">' + 
                     '<li>' +
-                        '<div class="line-it-button" data-lang="ja" data-type="share-a" data-env="REAL" data-url="' + encodeURI(window.location) + '" data-color="default" data-size="large" data-count="false" data-ver="3" style="display: none;"></div>' + 
+                        '<div class="line-it-button" data-lang="ja" data-type="share-a" data-env="REAL" data-url="' + shortUrlText + '" data-color="default" data-size="large" data-count="false" data-ver="3" style="display: none;"></div>' + 
                     '</li>' +
                     '<li>' + 
-                        '<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="' + encodeURI(window.location) + '">Tweet</a>' + 
+                        '<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="' + shortUrlText + '">Tweet</a>' + 
                     '</li>' +
                 '</ul>';
-                //'<a id="Twitter" href="https://twitter.com/share?url=' + encodeURI(window.location) + '&text=Destiny2 プロフィールカード" rel="nofollow noopener" target="_blank">Tweet</a>';
     };
 
     function Share() {
