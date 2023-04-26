@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destiny2 IDカード</title>
+    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <style>
         * {
             color: rgb(240, 239, 255);
@@ -20,7 +22,7 @@
             background-image: linear-gradient(90deg, rgba(0, 4, 35, 1), rgba(36, 35, 85, 1) 50%, rgba(0, 4, 22, 1));
         }
 
-        section p + * {
+        section p+* {
             margin-left: 20px;
         }
 
@@ -42,11 +44,16 @@
             border-radius: 10px;
             padding: 10px 20px;
         }
+
         #Twitter {
             background-color: rgb(29, 155, 240);
             border-radius: 10px;
             padding: 10px 20px;
             margin-left: 30px;
+        }
+        .share {
+            display: flex;
+            gap: 20px;
         }
     </style>
     <script>
@@ -60,37 +67,35 @@
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
 
-        window.onload = function() {
+        window.onload = function () {
             let name = getParam('n');
             if (name === '' || name === null)
                 return;
-            console.log(name + 'on start');
-            let id  = getParam('id');
+
+            let id = getParam('id');
+            let idn = getParam('idn');
             let platform = [getParam('p0'), getParam('p1'), getParam('p2')];
             let voice = [getParam('v0'), getParam('v1'), getParam('v2')];
             let guardian = [getParam('g0'), getParam('g1'), getParam('g2')];
+            let message = getParam('m');
 
             document.getElementById('name').innerHTML = name;
-            document.getElementById('bungieID').innerHTML = id;
+            document.getElementById('bungieID').innerHTML = id + '&#035;' + idn;
 
             let platformListText = '';
             let voiceListText = '';
             let guardianListText = '';
 
-            for (let i = 0; i < 3 ; i++)
-            {
-                if (platform[i] === 'on')
-                {
+            for (let i = 0; i < 3; i++) {
+                if (platform[i] === 'on') {
                     let listText = i === 0 ? 'PS' : i === 1 ? 'PC' : 'XBOX';
                     platformListText += '<li>' + listText + '</li>';
                 }
-                if (voice[i] === 'on')
-                {
-                    let listText = i === 0 ? 'PS：' + getParam('ps') : i === 1 ? 'Discord：' + getParam('dc') : '聞き専';
+                if (voice[i] === 'on') {
+                    let listText = i === 0 ? 'PS：' + getParam('ps') : i === 1 ? 'Discord：' + getParam('dc') + '&#035;' + getParam('dcn') : '聞き専';
                     voiceListText += '<li>' + listText + '</li>';
                 }
-                if (guardian[i] === 'on')
-                {
+                if (guardian[i] === 'on') {
                     let listText = i === 0 ? 'ハンター' : i === 1 ? 'ウォーロック' : 'タイタン';
                     guardianListText += '<li>' + listText + '</li>';
                 }
@@ -98,46 +103,50 @@
             document.getElementById('platform').innerHTML = platformListText;
             document.getElementById('voice').innerHTML = voiceListText;
             document.getElementById('guardian').innerHTML = guardianListText;
+            document.getElementById('message').innerHTML = message;
             document.getElementById('send').innerHTML =
-                '<a id="LINE" href="http://line.me/R/msg/text/?' + window.location + '%0aDestiny2 プロフィールカード" target="_blank" rel="nofollow noopener">LINEメッセージで送信</a>' + 
-                '<a id="Twitter" href="https://twitter.com/share?url=' + window.location + '&text=Destiny2 プロフィールカード" rel="nofollow noopener" target="_blank">Tweet</a>';
-                // '<input type="text" name="code" value="' + window.location + '">' + 
-                // '<button onclick="copy();">コピー</button>';
-        };
+                '<ul class="share">' + 
+                    '<li>' +
+                        '<div class="line-it-button" data-lang="ja" data-type="share-a" data-env="REAL" data-url="' + encodeURI(window.location) + '" data-color="default" data-size="large" data-count="false" data-ver="3" style="display: none;"></div>' + 
+                    '</li>' +
+                    '<li>' + 
+                        '<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="' + encodeURI(window.location) + '">Tweet</a>' + 
+                    '</li>' +
+                '</ul>';
+                //'<a id="Twitter" href="https://twitter.com/share?url=' + encodeURI(window.location) + '&text=Destiny2 プロフィールカード" rel="nofollow noopener" target="_blank">Tweet</a>';
+    };
 
-        function Share() {
-            let name = document.getElementsByName('n')[0].value;
-            let id = document.getElementsByName('id')[0].value;
-            let missCount = 0;
+    function Share() {
+        let name = document.getElementsByName('n')[0].value;
+        let id = document.getElementsByName('id')[0].value;
+        let idn = document.getElementsByName('idn')[0].value;
+        let missCount = 0;
 
-            console.log(name);
-            console.log(id);
-
-            if (name === '')
-            {
-                missCount = missCount + 1;
-            }
-            if (id === '' || id.indexOf('#') === -1){
-                missCount = missCount + 2;
-            }
-
-            if (missCount >= 1)
-            {
-                switch(missCount) {
-                    case 1:
-                        alert('名前を入力してください。');
-                        break;
-                    case 2:
-                        alert('BungieIDを＃付きで入力してください。');
-                        break;
-                    case 3:
-                        alert('名前とBungieIDを入力してください。');
-                        break;
-                }
-                return;
-            }
-            document.d2Card.submit();
+        if (name === '')
+        {
+            missCount = missCount + 1;
         }
+        if (id === '' || idn === ''){
+            missCount = missCount + 2;
+        }
+
+        if (missCount >= 1)
+        {
+            switch(missCount) {
+            case 1:
+                alert('名前を入力してください。');
+                break;
+            case 2:
+                alert('BungieIDを入力してください。');
+                break;
+            case 3:
+                alert('名前とBungieIDを入力してください。');
+                break;
+            }
+            return;
+        }
+        document.d2Card.submit();
+    }
     </script>
 </head>
 
@@ -152,7 +161,7 @@
                 </section>
                 <section>
                     <p>Bungie ID</p>
-                    <p id="bungieID"><input type="text" name="id"></p>
+                    <p id="bungieID"><input type="text" name="id">&#035;<input type="text" name="idn"></p>
                 </section>
                 <section>
                     <p>プラットフォーム</p>
@@ -166,7 +175,8 @@
                     <p>ボイスチャット</p>
                     <ul id="voice">
                         <li><label><input type="checkbox" name="v0">PS：</label><input type="text" name="ps"></li>
-                        <li><label><input type="checkbox" name="v1">Discord：</label><input type="text" name="dc"></li>
+                        <li><label><input type="checkbox" name="v1">Discord：</label><input type="text"
+                                name="dc">&#035;<input type="text" name="dcn"></li>
                         <li><label><input type="checkbox" name="v2">聞き専</label></li>
                     </ul>
                 </section>
@@ -177,6 +187,10 @@
                         <li><label><input type="checkbox" name="g1">ウォーロック</label></li>
                         <li><label><input type="checkbox" name="g2">タイタン</label></li>
                     </ul>
+                </section>
+                <section>
+                    <p>一言</p>
+                    <p id="message"><textarea name="m" cols="30" rows="10"></textarea></p>
                 </section>
             </form>
             <p id="send"><button onclick="Share();">共有</button></p>
