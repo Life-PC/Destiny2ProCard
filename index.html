@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-store">
     <title>Destiny2 IDカード</title>
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -150,18 +151,17 @@
             let shortUrlText = '';
 
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", apiCallUrl);
+            xhr.open("GET", apiCallUrl, false);
             xhr.send();
-            xhr.responseType = "json";
             
-            xhr.onload = () => {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    const data = xhr.response;
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                if (typeof xhr.response === "string") {
+                    const data = JSON.parse(xhr.response);
                     shortUrlText = data.shorturl;
-                } else {
-                    shortUrlText = longUrl;
                 }
-            };
+            } else {
+                shortUrlText = longUrl;
+            }
 
             document.getElementById('send').innerHTML =
                 '<ul class="share">' + 
