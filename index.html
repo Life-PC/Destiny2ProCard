@@ -14,7 +14,8 @@
         }
 
         input[type="text"],
-        button {
+        button,
+        textarea {
             color: black;
         }
 
@@ -68,16 +69,16 @@
         }
 
         window.onload = function () {
-            let name = getParam('n');
+            let name = decodeURIComponent(getParam('n'));
             if (name === '' || name === null)
                 return;
 
-            let id = getParam('id');
+            let id = decodeURIComponent(getParam('id'));
             let idn = getParam('idn');
             let platform = [getParam('p0'), getParam('p1'), getParam('p2')];
             let voice = [getParam('v0'), getParam('v1'), getParam('v2')];
             let guardian = [getParam('g0'), getParam('g1'), getParam('g2')];
-            let message = getParam('m');
+            let message = decodeURIComponent(getParam('m'));
 
             document.getElementById('name').innerHTML = name;
             document.getElementById('bungieID').innerHTML = id + '&#035;' + idn;
@@ -92,7 +93,7 @@
                     platformListText += '<li>' + listText + '</li>';
                 }
                 if (voice[i] === 'on') {
-                    let listText = i === 0 ? 'PS：' + getParam('ps') : i === 1 ? 'Discord：' + getParam('dc') + '&#035;' + getParam('dcn') : '聞き専';
+                    let listText = i === 0 ? 'PS：' + getParam('ps') : i === 1 ? 'Discord：' + decodeURIComponent(getParam('dc')) + '&#035;' + getParam('dcn') : '聞き専';
                     voiceListText += '<li>' + listText + '</li>';
                 }
                 if (guardian[i] === 'on') {
