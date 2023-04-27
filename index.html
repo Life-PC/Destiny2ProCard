@@ -5,205 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destiny2 IDカード</title>
-    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <style>
-        * {
-            color: rgb(240, 239, 255);
-        }
-        input[type="text"],
-        button,
-        textarea {
-            color: black;
-        }
-
-        html {
-            background-image: linear-gradient(90deg, rgba(0, 4, 35, 1), rgba(36, 35, 85, 1) 50%, rgba(0, 4, 22, 1));
-        }
-
-        section:nth-child(1) {
-            margin-top: 30px;
-        }
-        section {
-            border: 1px solid #FFF;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-sizing: border-box;
-        }
-
-        section p:first-child {
-            font-size: 18px;
-            margin-top: -13px;
-            margin-left: 15px;
-            padding: 0 10px;
-            background-color: White;
-            color: black;
-            border-radius: 10px;
-            width: fit-content;
-        }
-
-        section p+* {
-            margin-left: 20px;
-        }
-        #name input{
-            width: 93%;
-        }
-        #bungieID input {
-            width: 43%;
-        }
-        #voice li:nth-child(1) label + input {
-            width: 76%;
-        }
-        #voice li:nth-child(2) label + input,
-        #voice li:nth-child(2) label + input + input {
-            width: 29%;
-        }
-        #message textarea {
-            width: 93%;
-        }
-        ul {
-            padding: 0;
-        }
-
-        li {
-            list-style-type: none;
-            list-style-position: inside;
-        }
-
-        form {
-            margin-bottom: 30px;
-        }
-
-        #LINE {
-            background-color: rgb(0, 166, 0);
-            border-radius: 10px;
-            padding: 10px 20px;
-        }
-
-        #Twitter {
-            background-color: rgb(29, 155, 240);
-            border-radius: 10px;
-            padding: 10px 20px;
-            margin-left: 30px;
-        }
-        .share {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-    </style>
-    <script>
-        function getParam(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
-
-        window.onload = function () {
-            let name = getParam('n');
-            if (name === '' || name === null)
-                return;
-
-            name = decodeURIComponent(getParam('n'));
-            let id = decodeURIComponent(getParam('id'));
-            let idn = getParam('idn');
-            let platform = [getParam('p0'), getParam('p1'), getParam('p2')];
-            let voice = [getParam('v0'), getParam('v1'), getParam('v2')];
-            let guardian = [getParam('g0'), getParam('g1'), getParam('g2')];
-            let message = decodeURIComponent(getParam('m'));
-
-            document.getElementById('name').innerHTML = name;
-            document.getElementById('bungieID').innerHTML = id + '&#035;' + idn;
-
-            let platformListText = '';
-            let voiceListText = '';
-            let guardianListText = '';
-
-            for (let i = 0; i < 3; i++) {
-                if (platform[i] === 'on') {
-                    let listText = i === 0 ? 'PS' : i === 1 ? 'PC' : 'XBOX';
-                    platformListText += '<li>' + listText + '</li>';
-                }
-                if (voice[i] === 'on') {
-                    let listText = i === 0 ? 'PS：' + getParam('ps') : i === 1 ? 'Discord：' + decodeURIComponent(getParam('dc')) + '&#035;' + getParam('dcn') : '聞き専';
-                    voiceListText += '<li>' + listText + '</li>';
-                }
-                if (guardian[i] === 'on') {
-                    let listText = i === 0 ? 'ハンター' : i === 1 ? 'ウォーロック' : 'タイタン';
-                    guardianListText += '<li>' + listText + '</li>';
-                }
-            }
-            document.getElementById('platform').innerHTML = platformListText;
-            document.getElementById('voice').innerHTML = voiceListText;
-            document.getElementById('guardian').innerHTML = guardianListText;
-            document.getElementById('message').innerHTML = message;
-
-            const apiKey = '86efd9a9507da8f941e167876b25ccea';
-            const longUrl = window.location;
-            const apiUrl = 'https://xgd.io/V1/shorten';
-            const apiCallUrl = `${apiUrl}?url=${encodeURIComponent(longUrl)}&key=${apiKey}`;
-            let shortUrlText = '';
-
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", apiCallUrl, false);
-            xhr.send();
-            
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                if (typeof xhr.response === "string") {
-                    const data = JSON.parse(xhr.response);
-                    shortUrlText = data.shorturl;
-                }
-            } else {
-                shortUrlText = longUrl;
-            }
-
-            document.getElementById('send').innerHTML =
-                '<ul class="share">' + 
-                    '<li>' +
-                        '<div class="line-it-button" data-lang="ja" data-type="share-a" data-env="REAL" data-url="' + shortUrlText + '" data-color="default" data-size="large" data-count="false" data-ver="3" style="display: none;"></div>' + 
-                    '</li>' +
-                    '<li>' + 
-                        '<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="' + shortUrlText + '">Tweet</a>' + 
-                    '</li>' +
-                '</ul>';
-    };
-
-    function Share() {
-        let name = document.getElementsByName('n')[0].value;
-        let id = document.getElementsByName('id')[0].value;
-        let idn = document.getElementsByName('idn')[0].value;
-        let missCount = 0;
-
-        if (name === '')
-        {
-            missCount = missCount + 1;
-        }
-        if (id === '' || idn === ''){
-            missCount = missCount + 2;
-        }
-
-        if (missCount >= 1)
-        {
-            switch(missCount) {
-            case 1:
-                alert('名前を入力してください。');
-                break;
-            case 2:
-                alert('BungieIDを入力してください。');
-                break;
-            case 3:
-                alert('名前とBungieIDを入力してください。');
-                break;
-            }
-            return;
-        }
-        document.d2Card.submit();
-    }
-    </script>
+    <link rel="stylesheet" href="style.css">
+    <script src="common.js"></script>
 </head>
 
 <body>
@@ -217,7 +20,10 @@
                 </section>
                 <section>
                     <p>Bungie ID</p>
-                    <p id="bungieID"><input type="text" name="id">&#035;<input type="text" name="idn"></p>
+                    <p id="bungieID">
+                        <input type="text" name="id" enterkeyhint=”done”>&#035;
+                        <input type="text" name="idn" inputmode="numeric" enterkeyhint=”done”>
+                    </p>
                 </section>
                 <section>
                     <p>プラットフォーム</p>
@@ -230,9 +36,19 @@
                 <section>
                     <p>ボイスチャット</p>
                     <ul id="voice">
-                        <li><label><input type="checkbox" name="v0">PS：</label><input type="text" name="ps"></li>
-                        <li><label><input type="checkbox" name="v1">Discord：</label><input type="text"
-                                name="dc">&#035;<input type="text" name="dcn"></li>
+                        <li>
+                            <label>
+                                <input type="checkbox" name="v0" onchange="AccoutCheckChenge(0);">PS：
+                            </label>
+                            <input type="text" name="ps" onChange="AccountChangeText(0);" enterkeyhint=”done”>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" name="v1" onchange="AccoutCheckChenge(1);">Discord：
+                            </label>
+                            <input type="text" name="dc" onChange="AccountChangeText(1);" enterkeyhint=”done”>&#035;
+                            <input type="text" name="dcn" onChange="AccountChangeText(1);" inputmode="numeric" enterkeyhint=”done”>
+                        </li>
                         <li><label><input type="checkbox" name="v2">聞き専</label></li>
                     </ul>
                 </section>
@@ -245,13 +61,17 @@
                     </ul>
                 </section>
                 <section>
-                    <p>一言</p>
-                    <p id="message"><textarea name="m" cols="30" rows="10"></textarea></p>
+                    <p id="phrase">一言</p>
+                    <p id="message">
+                        <textarea name="m" cols="30" rows="10" maxlength="200" oninput="PhraseChangeCount();"></textarea>
+                    </p>
                 </section>
             </form>
             <p id="send"><button onclick="Share();">共有</button></p>
         </article>
     </main>
+    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 
 </html>

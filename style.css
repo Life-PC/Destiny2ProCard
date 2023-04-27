@@ -1,0 +1,83 @@
+* {
+    color: rgb(240, 239, 255);
+}
+input[type="text"],
+button,
+textarea {
+    color: black;
+}
+
+html {
+    background-image: linear-gradient(90deg, rgba(0, 4, 35, 1), rgba(36, 35, 85, 1) 50%, rgba(0, 4, 22, 1));
+}
+
+section:nth-child(1) {
+    margin-top: 30px;
+}
+section {
+    border: 1px solid #FFF;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+section p:first-child {
+    font-size: 18px;
+    margin-top: -13px;
+    margin-left: 15px;
+    padding: 0 10px;
+    background-color: White;
+    color: black;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+section p+* {
+    margin-left: 20px;
+}
+#name input{
+    width: 93%;
+}
+#bungieID input {
+    width: 43%;
+}
+#voice li:nth-child(1) label + input {
+    width: 76%;
+}
+#voice li:nth-child(2) label + input,
+#voice li:nth-child(2) label + input + input {
+    width: 29%;
+}
+#message textarea {
+    width: 93%;
+}
+ul {
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+    list-style-position: inside;
+}
+
+form {
+    margin-bottom: 30px;
+}
+
+#LINE {
+    background-color: rgb(0, 166, 0);
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+#Twitter {
+    background-color: rgb(29, 155, 240);
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-left: 30px;
+}
+.share {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
